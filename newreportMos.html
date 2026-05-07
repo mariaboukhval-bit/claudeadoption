@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude for Marketers — MCLT Leadership Review</title>
+<style>
+  :root {
+    --bg-page: #0a0a0a;
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #242424;
+    --bg-tertiary: #2e2e2e;
+    --text-primary: #f5f5f5;
+    --text-secondary: #a8a8a8;
+    --text-tertiary: #707070;
+    --text-success: #5DCAA5;
+    --text-info: #85B7EB;
+    --text-warning: #EF9F27;
+    --border-tertiary: rgba(255,255,255,0.10);
+    --border-secondary: rgba(255,255,255,0.18);
+    --border-info: #185FA5;
+    --border-warning: #854F0B;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --super-blue: #236CFF;
+    --honey: #F9C741;
+    --kiwi: #3BD85E;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    font-family: 'Avenir Next', 'Aptos', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--text-primary);
+    background: var(--bg-page);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { max-width: 1200px; margin: 0 auto; padding: 32px 40px 56px; }
+
+  .section-label { font-size: 13px; color: var(--text-secondary); margin: 0 0 0.5rem; }
+
+  .dashboard-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin: 0 0 0.5rem; flex-wrap: wrap; gap: 12px;
+  }
+  .dashboard-title { font-size: 22px; font-weight: 500; color: var(--text-primary); }
+  .dashboard-subtitle { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+  .dashboard-eyebrow { font-size: 12px; color: var(--text-tertiary); }
+  .divider { border-bottom: 0.5px solid var(--border-tertiary); margin: 0.75rem 0 1.25rem; }
+
+  .metrics-row {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px; margin-bottom: 1.5rem;
+  }
+  .metric-card { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 1rem; }
+  .metric-card .label { font-size: 13px; color: var(--text-secondary); }
+  .metric-card .value { font-size: 24px; font-weight: 500; margin-top: 4px; }
+  .metric-card .value.success { color: var(--text-success); }
+  .metric-card .detail { font-size: 12px; color: var(--text-tertiary); margin-top: 2px; }
+
+  .chart-card {
+    background: var(--bg-primary); border: 0.5px solid var(--border-tertiary);
+    border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1.5rem;
+  }
+  .chart-canvas-wrap { position: relative; width: 100%; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 1.5rem; }
+  @media (max-width: 760px) { .two-col { grid-template-columns: 1fr; } }
+  .chart-card-sm {
+    background: var(--bg-primary); border: 0.5px solid var(--border-tertiary);
+    border-radius: var(--radius-lg); padding: 1rem;
+  }
+
+  .decisions-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px; margin-bottom: 1rem;
+  }
+  .decision-card {
+    background: var(--bg-primary); border: 0.5px solid var(--border-info);
+    border-radius: var(--radius-lg); padding: 1rem;
+  }
+  .decision-card.warning { border-color: var(--border-warning); }
+  .decision-card .head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .decision-card .icon-bullet {
+    width: 18px; height: 18px; border-radius: 4px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+    color: var(--text-info); background: rgba(133,183,235,0.15);
+  }
+  .decision-card.warning .icon-bullet { color: var(--text-warning); background: rgba(239,159,39,0.15); }
+  .decision-card .title { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+  .decision-card .body { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .big-divider {
+    height: 1px; background: var(--border-tertiary);
+    margin: 3rem 0 2rem; position: relative;
+  }
+  .big-divider::after {
+    content: ''; position: absolute; left: 50%; top: -4px;
+    width: 8px; height: 8px; background: var(--super-blue);
+    border-radius: 50%; transform: translateX(-50%);
+  }
+
+  .part3-eyebrow {
+    font-size: 11px; font-weight: 700; color: var(--super-blue);
+    letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .part3-title { font-size: 26px; font-weight: 500; color: var(--text-primary); margin-bottom: 6px; }
+  .part3-subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 24px; }
+
+  .decisions-banner {
+    background: var(--super-blue); color: white;
+    padding: 18px 22px; border-radius: var(--radius-lg); margin-bottom: 24px;
+  }
+  .decisions-banner-label {
+    font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.85);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px;
+  }
+  .decisions-list { list-style: none; }
+  .decisions-list li {
+    padding-left: 36px; position: relative; font-size: 14px; color: white;
+    margin-bottom: 8px; line-height: 1.5;
+  }
+  .decisions-list li:last-child { margin-bottom: 0; }
+  .decisions-list li .num {
+    position: absolute; left: 0; top: 0;
+    width: 24px; height: 24px; background: white; color: var(--super-blue);
+    font-weight: 700; font-size: 12px; border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .hero-quote {
+    background: var(--bg-secondary); border-left: 4px solid var(--super-blue);
+    padding: 16px 20px; margin-bottom: 28px;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+  .hero-quote-label {
+    font-size: 11px; font-weight: 700; color: var(--super-blue);
+    letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .hero-quote-text { font-size: 16px; color: var(--text-primary); line-height: 1.5; }
+
+  .glance-row {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px; margin-bottom: 28px;
+  }
+  .glance-card {
+    background: var(--bg-secondary); border-left: 3px solid var(--super-blue);
+    padding: 14px 18px; border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+  .glance-label {
+    font-size: 10px; font-weight: 700; color: var(--super-blue);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;
+  }
+  .glance-value { font-size: 20px; font-weight: 500; color: var(--text-primary); margin-bottom: 2px; }
+  .glance-detail { font-size: 12px; color: var(--text-secondary); }
+
+  h2.section-h { font-size: 18px; font-weight: 500; color: var(--text-primary); margin: 0 0 12px; }
+  h3.subsection-h {
+    font-size: 13px; font-weight: 700; color: var(--text-secondary);
+    margin: 0 0 10px; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+
+  .agenda { border: 1px solid var(--border-tertiary); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 28px; }
+  .agenda-row { display: grid; grid-template-columns: 70px 1fr 140px; border-bottom: 1px solid var(--border-tertiary); }
+  .agenda-row:last-child { border-bottom: none; }
+  .agenda-row.header {
+    background: var(--super-blue); color: white;
+    font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .agenda-row > div { padding: 12px 16px; font-size: 13px; }
+  .agenda-row.header .time-cell, .agenda-row.header .who-cell { color: white; }
+  .agenda-row .time-cell { color: var(--super-blue); font-weight: 700; font-size: 12px; }
+  .agenda-row .who-cell { color: var(--text-tertiary); font-size: 12px; }
+  .agenda-row strong { color: var(--text-primary); }
+  .agenda-body { color: var(--text-secondary); }
+  @media (max-width: 600px) { .agenda-row { grid-template-columns: 1fr; } }
+
+  .timeline-row {
+    display: grid; grid-template-columns: 110px 1fr;
+    margin-bottom: 8px; border-left: 3px solid var(--super-blue);
+    background: var(--bg-secondary);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0; overflow: hidden;
+  }
+  .timeline-row.honey { border-left-color: var(--honey); }
+  .timeline-row.kiwi { border-left-color: var(--kiwi); }
+  .timeline-when {
+    padding: 12px 14px; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    display: flex; align-items: center; color: var(--super-blue);
+  }
+  .timeline-row.honey .timeline-when { color: var(--honey); }
+  .timeline-row.kiwi .timeline-when { color: var(--kiwi); }
+  .timeline-what { padding: 12px 14px; }
+  .timeline-what-title { font-size: 13px; font-weight: 500; color: var(--text-primary); margin-bottom: 2px; }
+  .timeline-what-detail { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  @media (max-width: 600px) { .timeline-row { grid-template-columns: 1fr; } }
+
+  .success-metrics {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px; margin-bottom: 28px;
+  }
+  .success-card {
+    background: var(--bg-primary); border: 0.5px solid var(--border-tertiary);
+    border-radius: var(--radius-md); padding: 14px 18px;
+  }
+  .success-label {
+    font-size: 11px; color: var(--super-blue); font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px;
+  }
+  .success-target { font-size: 13px; color: var(--text-primary); line-height: 1.5; }
+  .success-target strong { color: var(--super-blue); }
+
+  .evidence-box {
+    background: var(--bg-secondary); border-radius: var(--radius-md);
+    padding: 16px 20px; margin-bottom: 28px;
+  }
+  .evidence-quote { font-size: 13px; color: var(--text-primary); font-style: italic; margin-bottom: 4px; line-height: 1.5; }
+  .evidence-source { font-size: 11px; color: var(--text-tertiary); margin-bottom: 12px; }
+  .evidence-source:last-child { margin-bottom: 0; }
+
+  .footer {
+    margin-top: 40px; padding-top: 16px;
+    border-top: 1px solid var(--border-tertiary);
+    font-size: 11px; color: var(--text-tertiary); line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============== PART 1: DASHBOARD ============== -->
+
+<div class="dashboard-head">
+  <div>
+    <div class="dashboard-title">Claude for marketers — workshop series</div>
+    <div class="dashboard-subtitle">Apr 22 (Part 1) + May 6, 2026 (Part 2) · TAM = 920 marketers &amp; communicators</div>
+  </div>
+  <div class="dashboard-eyebrow">Marketing CD&amp;C</div>
+</div>
+
+<div class="divider"></div>
+
+<div class="section-label">Reach</div>
+<div class="metrics-row">
+  <div class="metric-card">
+    <div class="label">TAM reach</div>
+    <div class="value">59%</div>
+    <div class="detail">543 of 920</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Unique attendees</div>
+    <div class="value">578</div>
+    <div class="detail">across both sessions</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Returned for Part 2</div>
+    <div class="value">38%</div>
+    <div class="detail">173 of 450</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">NPS (live poll, n=67)</div>
+    <div class="value success">+43</div>
+    <div class="detail">+63 post-survey n=16</div>
+  </div>
+</div>
+
+<div class="section-label">Attendance funnel</div>
+<div class="chart-card">
+  <div class="chart-canvas-wrap" style="height: 230px;">
+    <canvas id="funnelChart" role="img" aria-label="Funnel from TAM 920 to attended both 173">TAM 920 → at least one session 543 → both sessions 173.</canvas>
+  </div>
+</div>
+
+<div class="two-col">
+  <div>
+    <div class="section-label">Penetration by Level-2 org</div>
+    <div class="chart-card-sm">
+      <div class="chart-canvas-wrap" style="height: 260px;">
+        <canvas id="orgChart" role="img" aria-label="Penetration by org">People &amp; Places 95%, CG 57%, Commercial 53%, CEO Transformation 45%, Customer Success 36%, SBG 17%.</canvas>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="section-label">Self-rated confidence after Part 2 (n=67)</div>
+    <div class="chart-card-sm">
+      <div class="chart-canvas-wrap" style="height: 260px;">
+        <canvas id="confidenceChart" role="img" aria-label="Confidence ratings 1-5 across three learning objectives">Build a Skill 3.7, Cowork 3.8, Decision framework 3.6.</canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label">What people brought to the chat — themes from 33 questions, 56 friction &amp; feedback signals</div>
+<div class="chart-card">
+  <div class="chart-canvas-wrap" style="height: 320px;">
+    <canvas id="themeChart" role="img" aria-label="Themes from chat">Connector friction 12, pace 9, skill creation 7, audience relevance 6, momentum 6.</canvas>
+  </div>
+</div>
+
+<div class="section-label">What leadership should decide</div>
+<div class="decisions-grid">
+  <div class="decision-card">
+    <div class="head">
+      <span class="icon-bullet">◎</span>
+      <span class="title">Part 3: branding with AI</span>
+    </div>
+    <div class="body">Requested by name in chat and survey. Pairs with the open question about deck output not matching brand.</div>
+  </div>
+  <div class="decision-card">
+    <div class="head">
+      <span class="icon-bullet">◎</span>
+      <span class="title">BU-tailored sessions</span>
+    </div>
+    <div class="body">"Just for Credit Karma marketing" / "team up with CG local leads." Comms team feels uncatered for.</div>
+  </div>
+  <div class="decision-card warning">
+    <div class="head">
+      <span class="icon-bullet">!</span>
+      <span class="title">Connector experience</span>
+    </div>
+    <div class="body">12 in-session friction reports on Drive, folders, permissions. Native Sheets/Slides + Asana flagged.</div>
+  </div>
+  <div class="decision-card warning">
+    <div class="head">
+      <span class="icon-bullet">!</span>
+      <span class="title">Pace &amp; focus time</span>
+    </div>
+    <div class="body">9 attendees said "too fast" or "no time to practice." Office hours pattern is the right fix.</div>
+  </div>
+</div>
+
+<!-- ============== DIVIDER ============== -->
+<div class="big-divider"></div>
+
+<!-- ============== PART 2: PART 3 PROPOSAL ============== -->
+
+<div class="part3-eyebrow">Marketing · Craft Development &amp; Capabilities</div>
+<div class="part3-title">Part 3 proposal &amp; 90-day activation</div>
+<div class="part3-subtitle">Branding with AI · BU cohort pilots · Connector pull-through</div>
+
+<div class="decisions-banner">
+  <div class="decisions-banner-label">What we're asking MCLT to decide</div>
+  <ol class="decisions-list">
+    <li><span class="num">1</span>Greenlight Part 3 — Branding with AI — for Q3 2026.</li>
+    <li><span class="num">2</span>Co-sponsor two BU-cohort pilots: Credit Karma marketing + CG with local leads.</li>
+    <li><span class="num">3</span>Pull through the connector roadmap with T4i (Tableau, Sheets, Slides, Asana).</li>
+  </ol>
+</div>
+
+<div class="hero-quote">
+  <div class="hero-quote-label">Why this proposal · Strongest unprompted signal</div>
+  <div class="hero-quote-text">"3rd session on branding with AI perhaps?" — Session 2 chat. Paired with skepticism that current Claude outputs match Intuit brand. The fix is upstream.</div>
+</div>
+
+<div class="glance-row">
+  <div class="glance-card">
+    <div class="glance-label">Series so far</div>
+    <div class="glance-value">578 unique</div>
+    <div class="glance-detail">59% of 920-marketer TAM · +43 NPS · 38% return</div>
+  </div>
+  <div class="glance-card">
+    <div class="glance-label">Strongest ask</div>
+    <div class="glance-value">Branding with AI</div>
+    <div class="glance-detail">Named explicitly in chat · pairs with brand-fidelity skepticism</div>
+  </div>
+  <div class="glance-card">
+    <div class="glance-label">Biggest unlock</div>
+    <div class="glance-value">BU cohorts</div>
+    <div class="glance-detail">47% of Commercial · 43% of CG marketers untouched</div>
+  </div>
+</div>
+
+<h2 class="section-h">Part 3 — Branding with AI</h2>
+<p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.6;">A 90-minute hands-on session that solves the brand-fidelity gap surfaced in Parts 1 and 2. Co-delivered with Karen Weiss (Brand Voice) and the Intuit Brand Portal team. Open to the full TAM. Target Q3 2026.</p>
+
+<h3 class="subsection-h">Session arc</h3>
+<div class="agenda">
+  <div class="agenda-row header">
+    <div>Time</div>
+    <div>Block</div>
+    <div>Driver</div>
+  </div>
+  <div class="agenda-row">
+    <div class="time-cell">0:00</div>
+    <div class="agenda-body"><strong>Brand voice grounding.</strong> Add Karen Weiss's Brand Voice Doc and the Intuit Brand Portal as Project context. Set guardrails that travel across chats.</div>
+    <div class="who-cell">Karen Weiss + CD&amp;C</div>
+  </div>
+  <div class="agenda-row">
+    <div class="time-cell">0:15</div>
+    <div class="agenda-body"><strong>Live exercise — copy across brands.</strong> One campaign idea, four brand voices: IES, QBO, TurboTax, Mailchimp. Attendees test how voice shifts when context is right.</div>
+    <div class="who-cell">Sylvia + Karen</div>
+  </div>
+  <div class="agenda-row">
+    <div class="time-cell">0:40</div>
+    <div class="agenda-body"><strong>Visual brand fidelity Skill.</strong> Build a Skill that enforces colors, typography, corner radius. Fix the "sharp corners vs. rounded" complaint head-on.</div>
+    <div class="who-cell">Chris Koussis</div>
+  </div>
+  <div class="agenda-row">
+    <div class="time-cell">1:00</div>
+    <div class="agenda-body"><strong>Brand-safety pre-flight.</strong> Use Claude as a brand-safety checker before Legal review. The pattern that answers "where does an AI draft enter our review process?"</div>
+    <div class="who-cell">Brand Portal team</div>
+  </div>
+  <div class="agenda-row">
+    <div class="time-cell">1:15</div>
+    <div class="agenda-body"><strong>Q&amp;A + office hours hand-off.</strong> Set expectations for ongoing support. Plug Ikezi's office hours.</div>
+    <div class="who-cell">Ikezi + CD&amp;C</div>
+  </div>
+</div>
+
+<h2 class="section-h">90-day activation roadmap</h2>
+<p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.6;">Three are CD&amp;C's to run. Two require MCLT to unlock.</p>
+
+<div style="margin-bottom: 28px;">
+  <div class="timeline-row">
+    <div class="timeline-when">May 2026</div>
+    <div class="timeline-what">
+      <div class="timeline-what-title">Publish living FAQ + recurring office hours</div>
+      <div class="timeline-what-detail">CD&amp;C + Ikezi · 2 slots/week. Solves the "too fast" feedback by giving time, not by re-teaching.</div>
+    </div>
+  </div>
+  <div class="timeline-row">
+    <div class="timeline-when">May 2026</div>
+    <div class="timeline-what">
+      <div class="timeline-what-title">Connector escalation memo to T4i</div>
+      <div class="timeline-what-detail">CD&amp;C → T4i. Verbatim attendee evidence. MCLT pull-through requested for Tableau, Sheets, Slides, Asana.</div>
+    </div>
+  </div>
+  <div class="timeline-row honey">
+    <div class="timeline-when">June 2026</div>
+    <div class="timeline-what">
+      <div class="timeline-what-title">MCLT-sponsored BU pilot kickoffs</div>
+      <div class="timeline-what-detail">Credit Karma marketing + CG. CD&amp;C scopes BU-specific examples and pre-built Skills.</div>
+    </div>
+  </div>
+  <div class="timeline-row honey">
+    <div class="timeline-when">July 2026</div>
+    <div class="timeline-what">
+      <div class="timeline-what-title">Run the BU cohort sessions</div>
+      <div class="timeline-what-detail">Same content arc as Parts 1+2, BU-relevant Skills, local leads co-hosting. Target: 70% TAM penetration in those two BUs.</div>
+    </div>
+  </div>
+  <div class="timeline-row kiwi">
+    <div class="timeline-when">Aug-Sep 2026</div>
+    <div class="timeline-what">
+      <div class="timeline-what-title">Part 3: Branding with AI — open session</div>
+      <div class="timeline-what-detail">Co-presented with Karen Weiss + Intuit Brand Portal. Returns to the full TAM.</div>
+    </div>
+  </div>
+</div>
+
+<h2 class="section-h">How we'll know it worked</h2>
+<div class="success-metrics">
+  <div class="success-card">
+    <div class="success-label">Reach</div>
+    <div class="success-target"><strong>≥65%</strong> of 920-marketer TAM attends Part 3 (vs. 49% Part 1, 33% Part 2).</div>
+  </div>
+  <div class="success-card">
+    <div class="success-label">BU penetration</div>
+    <div class="success-target"><strong>≥70%</strong> in Credit Karma marketing and CG cohorts (vs. 54% / 57% today).</div>
+  </div>
+  <div class="success-card">
+    <div class="success-label">Brand confidence</div>
+    <div class="success-target">Post-session item: <strong>≥4 of 5</strong> on "I can produce on-brand outputs with Claude."</div>
+  </div>
+  <div class="success-card">
+    <div class="success-label">Friction</div>
+    <div class="success-target">Connector and permission complaints in chat: <strong>≤3 mentions</strong> (vs. 12 in Part 2).</div>
+  </div>
+</div>
+
+<h2 class="section-h">Evidence base</h2>
+<div class="evidence-box">
+  <div class="evidence-quote">"3rd session on branding with AI perhaps?"</div>
+  <div class="evidence-source">— Session 2 chat (organic ask, unprompted)</div>
+
+  <div class="evidence-quote">"Is there a way to ensure the deck design is aligned to Intuit brand guidelines?"</div>
+  <div class="evidence-source">— Session 2 chat</div>
+
+  <div class="evidence-quote">"Does the skill work 100%? Even with template, doesn't have exact font and designs are slightly off — sharp corners vs. rounded."</div>
+  <div class="evidence-source">— Session 2 chat</div>
+
+  <div class="evidence-quote">"More of this please. Ideally tailored for different biz units. Could we do this just for Credit Karma marketing?"</div>
+  <div class="evidence-source">— Post-session feedback</div>
+
+  <div class="evidence-quote">"We went through the materials very quickly and when I had issues getting Claude to recognize the input files (like so many other attendees) I easily fell behind."</div>
+  <div class="evidence-source">— Session 2 post-survey verbatim</div>
+</div>
+
+<div class="footer">
+  Sources: Zoom attendance (Apr 22 + May 6) · Workday roster (Apr 8) · TAM list (920) · Live poll (n=67) · Post-survey (n=16) · Zoom chat log (May 6, 249 messages → 139 substantive → 40 questions).<br>
+  Marketing Craft Development &amp; Capabilities · Intuit Confidential and Proprietary
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+(function(){
+  if (typeof Chart === 'undefined') return;
+
+  var C = {
+    blue:'#378ADD', blueLight:'#B5D4F4',
+    teal:'#1D9E75', tealLight:'#5DCAA5',
+    amber:'#BA7517', amberLight:'#FAC775',
+    gray:'#888780', grayLight:'#5a5a55',
+    purple:'#7F77DD', red:'#E24B4A'
+  };
+
+  Chart.defaults.color = '#a8a8a8';
+  Chart.defaults.borderColor = 'rgba(255,255,255,0.08)';
+  Chart.defaults.font.family = "'Avenir Next', 'Aptos', sans-serif";
+
+  var f = document.getElementById('funnelChart');
+  if (f) new Chart(f, {
+    type: 'bar',
+    data: {
+      labels: ['TAM (marketers & comms)', 'Attended Part 1', 'Attended Part 2', 'Attended both', 'Stayed >60 min in Part 2'],
+      datasets: [{
+        label: 'People',
+        data: [920, 450, 301, 173, 77],
+        backgroundColor: [C.grayLight, C.blueLight, C.blue, C.teal, C.tealLight],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: function(ctx){ return ctx.parsed.x.toLocaleString() + ' people'; } } }
+      },
+      scales: {
+        x: { beginAtZero: true, ticks: { callback: function(v){ return v.toLocaleString(); } } },
+        y: { ticks: { font: { size: 12 } } }
+      }
+    }
+  });
+
+  var o = document.getElementById('orgChart');
+  if (o) new Chart(o, {
+    type: 'bar',
+    data: {
+      labels: ['People & Places', 'CG (Notarainni)', 'Commercial (Johnson)', 'CEO Transformation', 'Customer Success', 'SBG'],
+      datasets: [{
+        label: '% of TAM attended',
+        data: [95, 57, 53, 45, 36, 17],
+        backgroundColor: [C.teal, C.blue, C.blue, C.amber, C.amber, C.red],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: function(ctx){ return ctx.parsed.x + '% reach'; } } }
+      },
+      scales: {
+        x: { beginAtZero: true, max: 100, ticks: { callback: function(v){ return v + '%'; } } },
+        y: { ticks: { font: { size: 11 } } }
+      }
+    }
+  });
+
+  var cf = document.getElementById('confidenceChart');
+  if (cf) new Chart(cf, {
+    type: 'bar',
+    data: {
+      labels: ['Build a Skill', 'Use Cowork', 'Decision framework'],
+      datasets: [
+        { label: '5', data: [24, 22, 18], backgroundColor: C.teal, borderWidth: 0 },
+        { label: '4', data: [17, 23, 23], backgroundColor: C.tealLight, borderWidth: 0 },
+        { label: '3', data: [17, 12, 13], backgroundColor: C.grayLight, borderWidth: 0 },
+        { label: '2', data: [3,  6,  7],  backgroundColor: C.amberLight, borderWidth: 0 },
+        { label: '1 / 0', data: [6, 4, 6], backgroundColor: C.red, borderWidth: 0 }
+      ]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, font: { size: 11 } } },
+        tooltip: { callbacks: { label: function(ctx){ return ctx.dataset.label + ': ' + ctx.parsed.x + ' people'; } } }
+      },
+      scales: {
+        x: { stacked: true, beginAtZero: true, max: 67, ticks: { font: { size: 11 } } },
+        y: { stacked: true, ticks: { font: { size: 12 } } }
+      }
+    }
+  });
+
+  var t = document.getElementById('themeChart');
+  if (t) new Chart(t, {
+    type: 'bar',
+    data: {
+      labels: ['Connector / file-access friction', 'Pace, cognitive load, hands-on time', 'Skill creation & sharing mechanics', 'Audience-specific relevance', 'Positive momentum / appetite for more', 'Cowork vs Code vs Chat decisions', 'Project context, memory, cross-chat', 'Approval / governance / brand', 'Documentation & reference materials', 'Contractor / Cowork access'],
+      datasets: [{
+        label: 'Mentions',
+        data: [12, 9, 7, 6, 6, 4, 4, 3, 3, 2],
+        backgroundColor: [C.amber, C.amber, C.blue, C.purple, C.teal, C.blue, C.blue, C.amber, C.gray, C.red],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: function(ctx){ return ctx.parsed.x + ' mentions'; } } }
+      },
+      scales: {
+        x: { beginAtZero: true, ticks: { font: { size: 11 } } },
+        y: { ticks: { font: { size: 12 } } }
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
